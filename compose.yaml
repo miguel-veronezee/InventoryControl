@@ -16,5 +16,17 @@ services:
       timeout: 3s
       retries: 15
 
+  # Production image; run with `docker compose --profile app up --build`.
+  app:
+    build: .
+    profiles: ["app"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://app:app@db:5432/controle_pedidos
+    ports:
+      - "3000:3000"
+
 volumes:
   db-data:
