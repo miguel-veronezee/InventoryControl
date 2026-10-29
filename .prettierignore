@@ -1,0 +1,8 @@
+.next
+drizzle
+package-lock.json
+.superpowers
+.playwright-mcp
+playwright-report
+test-results
+next-env.d.ts

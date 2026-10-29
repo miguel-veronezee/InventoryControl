@@ -34,6 +34,7 @@
 ### Task 1: Reconstruir o projeto em Next 16 com lint, formatação e Vitest
 
 **Files:**
+
 - Replace (gerado por `create-next-app@16.4.3`): `package.json`, `package-lock.json`, `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.mjs`, `src/app/layout.tsx`, `src/app/globals.css`, `src/app/page.tsx`, `.gitignore`
 - Create: `.nvmrc`, `.prettierrc.json`, `.prettierignore`, `vitest.config.ts`
 - Modify: `src/lib/pedidos.test.ts` (migrar de `node:test` para Vitest)
@@ -41,10 +42,11 @@
 - Delete: `README.md` da demo (reescrito na Task 5)
 
 **Interfaces:**
+
 - Produces: scripts npm `dev`, `build`, `start`, `lint`, `typecheck` (`tsc --noEmit`), `format` (`prettier --write .`), `format:check` (`prettier --check .`), `test` (`vitest run`). Alias `@/*` → `src/*`.
 
 - [ ] **Step 1:** Gerar o projeto em diretório temporário (o nome da pasta `InventoryControl` tem maiúscula e o npm recusa):
-  `npx -y create-next-app@16.4.3 controle-pedidos --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --turbopack --disable-git` dentro do scratchpad. Copiar para a raiz do repo, sobrescrevendo os arquivos listados em "Replace". Não copiar `README.md`. Remover `public/*.svg` gerados. Garantir `"name": "controle-pedidos"`.
+      `npx -y create-next-app@16.4.3 controle-pedidos --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --turbopack --disable-git` dentro do scratchpad. Copiar para a raiz do repo, sobrescrevendo os arquivos listados em "Replace". Não copiar `README.md`. Remover `public/*.svg` gerados. Garantir `"name": "controle-pedidos"`.
 - [ ] **Step 2:** Criar `.nvmrc` com `24.22.2`; adicionar `"engines": { "node": ">=24" }`. Rodar `fnm use` e `node -v` → `v24.22.2`.
 - [ ] **Step 3:** ESLint tipado: adicionar `typescript-eslint` e estender `tseslint.configs.recommendedTypeChecked` com `parserOptions.projectService: true`, aplicado a `**/*.{ts,tsx}`; ignorar `*.config.*`, `.next/**`, `drizzle/**`, `playwright-report/**`, `test-results/**`. Adicionar `eslint-config-prettier` por último.
 - [ ] **Step 4:** Prettier: `.prettierrc.json` = `{ "printWidth": 100 }`; `.prettierignore` com `.next`, `drizzle`, `package-lock.json`, `.superpowers`, `.playwright-mcp`, `playwright-report`, `test-results`. Rodar `npm run format`.
@@ -56,10 +58,12 @@
 ### Task 2: Postgres em Docker, Drizzle e rota de saúde
 
 **Files:**
+
 - Create: `compose.yaml`, `.env.example`, `drizzle.config.ts`, `src/db/schema.ts`, `src/db/index.ts`, `src/db/env.ts`, `src/db/env.test.ts`, `src/app/api/health/route.ts`, `src/app/api/health/route.test.ts`
 - Modify: `package.json` (scripts)
 
 **Interfaces:**
+
 - Produces:
   - `getDatabaseUrl(env?: NodeJS.ProcessEnv): string` em `src/db/env.ts` — lança `Error` com mensagem contendo `"DATABASE_URL"` e `".env.example"` se ausente/vazia.
   - `getDb(): PostgresJsDatabase<typeof schema>` em `src/db/index.ts` — cria cliente sob demanda (singleton em `globalThis` para não multiplicar conexões no hot reload). **Nada conecta no import.**
@@ -76,7 +80,7 @@
   - `execute` rejeita → status 503, corpo `{ status: "degraded", database: "down" }`.
   - `execute` nunca resolve → 503 em menos de 3500 ms (use timeout de 3000 ms na rota; `vi.useFakeTimers` permitido).
 - [ ] **Step 5:** `npm test` → FAIL.
-- [ ] **Step 6:** Implementar `src/db/index.ts` (drizzle + postgres-js, `connect_timeout: 3`) e a rota (`db.execute(sql\`select 1\`)` em `Promise.race` com timeout de 3000 ms; qualquer erro → 503; logar o erro com `console.error`). `npm test` → PASS.
+- [ ] **Step 6:** Implementar `src/db/index.ts` (drizzle + postgres-js, `connect_timeout: 3`) e a rota (`db.execute(sql\`select 1\`)`em`Promise.race`com timeout de 3000 ms; qualquer erro → 503; logar o erro com`console.error`). `npm test` → PASS.
 - [ ] **Step 7:** Infra:
   - `compose.yaml`: serviço `db` com `postgres:17-alpine`, `POSTGRES_USER=app`, `POSTGRES_PASSWORD=app`, `POSTGRES_DB=controle_pedidos`, porta `5433:5432`, volume nomeado `db-data`, healthcheck `pg_isready -U app -d controle_pedidos`.
   - `.env.example`: `DATABASE_URL=postgres://app:app@localhost:5433/controle_pedidos` com comentário "copie para .env.local".
@@ -91,10 +95,12 @@
 ### Task 3: Tela inicial "em desenvolvimento" com shadcn e testes de acessibilidade
 
 **Files:**
+
 - Create: `components.json` (via `npx shadcn@4.23.0 init`), `src/components/ui/card.tsx`, `src/components/ui/badge.tsx` (via `shadcn add card badge`), `src/lib/utils.ts` (gerado), `playwright.config.ts`, `e2e/home.spec.ts`
 - Modify: `src/app/page.tsx`, `src/app/layout.tsx`, `src/app/globals.css`, `package.json`, `.gitignore`
 
 **Interfaces:**
+
 - Produces: script `test:e2e` (`playwright test`). Playwright sobe o app com `webServer: { command: "npm run build && npm run start", port: 3000, reuseExistingServer: !process.env.CI }`, projeto `chromium` só.
 
 - [ ] **Step 1: Testes que falham** em `e2e/home.spec.ts`:
@@ -108,17 +114,19 @@
   - Subtítulo: `Do momento da venda até o envio: veja o que precisa ser feito agora e o que está para atrasar.`
   - Card título: `Estamos preparando o primeiro passo`
   - Card texto: `A fila de pedidos ainda não está disponível. As funcionalidades chegarão uma por vez.`
-  Visual a cargo do implementador; usar tokens do shadcn, suportar modo claro e escuro.
+    Visual a cargo do implementador; usar tokens do shadcn, suportar modo claro e escuro.
 - [ ] **Step 4:** `npm run test:e2e` → 3 passed. Adicionar `playwright-report/` e `test-results/` ao `.gitignore`.
 - [ ] **Step 5:** Gate completo verde. Commit: `feat: add in-development home page with shadcn and a11y e2e tests`.
 
 ### Task 4: Imagem Docker da aplicação
 
 **Files:**
+
 - Create: `Dockerfile`, `.dockerignore`
 - Modify: `next.config.ts` (`output: "standalone"`), `compose.yaml` (serviço `app` opcional, profile `app`)
 
 **Interfaces:**
+
 - Consumes: `GET /api/health` (Task 2).
 - Produces: imagem que escuta na porta 3000, configurada só por `DATABASE_URL`.
 
@@ -135,9 +143,11 @@
 ### Task 5: CI no GitHub e documentação para pessoas e agentes
 
 **Files:**
+
 - Create: `.github/workflows/ci.yml`, `AGENTS.md`, `CLAUDE.md`, `PRODUCT.md`, `README.md`
 
 **Interfaces:**
+
 - Consumes: todos os scripts das Tasks 1–3; `Dockerfile` da Task 4.
 
 - [ ] **Step 1:** `ci.yml`, disparado em `push` para `main` e em `pull_request`:

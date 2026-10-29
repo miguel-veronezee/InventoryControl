@@ -37,14 +37,14 @@ Este documento substitui a demo descartável que existe hoje no repositório (`s
 
 ## Usuários e permissões
 
-| Papel | Pode |
-|-------|------|
-| Dono | Tudo da equipe + importar planilha, cadastrar/remover usuários, ver histórico completo |
-| Equipe | Ver a fila, buscar, avançar pedidos de etapa |
+| Papel  | Pode                                                                                   |
+| ------ | -------------------------------------------------------------------------------------- |
+| Dono   | Tudo da equipe + importar planilha, cadastrar/remover usuários, ver histórico completo |
+| Equipe | Ver a fila, buscar, avançar pedidos de etapa                                           |
 
-Toda mudança de etapa grava: pedido, etapa anterior, etapa nova, usuário, data/hora. Mudanças causadas pela importação são gravadas com origem "importação" e o dono que importou. *(Decisão do autor do documento.)*
+Toda mudança de etapa grava: pedido, etapa anterior, etapa nova, usuário, data/hora. Mudanças causadas pela importação são gravadas com origem "importação" e o dono que importou. _(Decisão do autor do documento.)_
 
-Datas e "vence hoje" usam o fuso `America/Sao_Paulo`, não o fuso do servidor. *(Decisão do autor do documento.)*
+Datas e "vence hoje" usam o fuso `America/Sao_Paulo`, não o fuso do servidor. _(Decisão do autor do documento.)_
 
 Não há cadastro público. O primeiro usuário dono é criado por um script de seed; os demais são cadastrados pelo dono.
 
@@ -65,8 +65,8 @@ Baseada na opção B escolhida no brainstorming e implementada na demo:
 
 Decidido com o usuário:
 
-- **Avanço em lote pede confirmação.** Antes de aplicar, mostra quantos pedidos serão alterados e para qual etapa, e só segue se a pessoa confirmar. Assim um clique errado não tira dezenas de pedidos da fila. *(Confirmar sempre que houver mais de um pedido selecionado é decisão do autor do documento.)*
-- **Desfazer logo após o lote.** Depois de um avanço em lote, aparece um botão "Desfazer" que devolve exatamente aqueles pedidos à etapa anterior. Ele fica disponível até a próxima ação ou por alguns segundos *(duração exata a cargo do builder)*.
+- **Avanço em lote pede confirmação.** Antes de aplicar, mostra quantos pedidos serão alterados e para qual etapa, e só segue se a pessoa confirmar. Assim um clique errado não tira dezenas de pedidos da fila. _(Confirmar sempre que houver mais de um pedido selecionado é decisão do autor do documento.)_
+- **Desfazer logo após o lote.** Depois de um avanço em lote, aparece um botão "Desfazer" que devolve exatamente aqueles pedidos à etapa anterior. Ele fica disponível até a próxima ação ou por alguns segundos _(duração exata a cargo do builder)_.
 - **Correção individual.** Qualquer usuário (dono ou equipe) pode voltar um pedido uma etapa.
 - **O histórico nunca é apagado.** Desfazer e voltar etapa geram novas entradas, marcadas como correção, com usuário e data/hora. Dá para entender o que aconteceu depois.
 
@@ -92,7 +92,7 @@ Decisões do autor do documento:
 - Upload do arquivo exportado no Seller Centre (formato `.xlsx`; confirmar quando houver uma planilha real).
 - Chave do pedido = número do pedido da Shopee. Pedido novo é criado; pedido existente tem os dados da Shopee atualizados (status, prazo, itens), **sem tocar na etapa interna**.
 - Se a Shopee marcar como enviado/cancelado, isso prevalece sobre a etapa interna.
-- Se a Shopee informar um status que contradiz o anterior (ex.: cancelado depois de enviado), o sistema aceita o novo status e registra a mudança no histórico, sem bloquear a importação. *(Decisão do autor do documento.)*
+- Se a Shopee informar um status que contradiz o anterior (ex.: cancelado depois de enviado), o sistema aceita o novo status e registra a mudança no histórico, sem bloquear a importação. _(Decisão do autor do documento.)_
 - Ao fim, mostra um resumo: X novos, Y atualizados, Z com erro (linha e motivo).
 
 **Bloqueio conhecido:** ainda não há planilha real. O mapeamento de colunas só pode ser fechado com um arquivo de exemplo. Até lá, a etapa de importação fica bloqueada; as demais seguem.
